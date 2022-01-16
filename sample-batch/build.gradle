@@ -1,0 +1,17 @@
+bootRun {
+    // 프로젝트 프로퍼티를 인수로 건넨다
+    if (project.hasProperty("args")) {
+        args project.args.split("\\s+")
+    }
+}
+
+dependencies {
+    compile project(":sample-domain")
+
+    // springframework
+    compile "org.springframework.boot:spring-boot-starter-batch"
+
+    testCompile "org.springframework.boot:spring-boot-starter-test"
+    testCompile "org.springframework.batch:spring-batch-test"
+    testCompile "org.spockframework:spock-spring:${spockVersion}"
+}

@@ -1,0 +1,56 @@
+bootJar {
+    enabled = false
+}
+
+jar {
+    enabled = true
+}
+
+// for Doma 2
+// Java클래스와 SQL파일의 출력처 디렉터리를 동일하게 한다
+processResources.destinationDir = compileJava.destinationDir
+// 컴파일하기 전에 SQL파일을 출력처 디렉터리에 복사하기 때문에 의존관계를 역전시켜둠
+compileJava.dependsOn processResources
+
+dependencies {
+    compile project(":sample-common")
+
+    // springframework
+    compile "org.springframework.boot:spring-boot-starter-aop"
+    compile "org.springframework.boot:spring-boot-starter-validation"
+    compile "org.springframework.boot:spring-boot-starter-mail"
+    compile "org.springframework.boot:spring-boot-starter-thymeleaf"
+    compile "org.springframework.boot:spring-boot-starter-jdbc"
+    compile "org.springframework.boot:spring-boot-starter-json"
+
+    // doma exclude springframework
+    annotationProcessor "org.seasar.doma.boot:doma-spring-boot-starter:1.1.1"
+    compile("org.seasar.doma.boot:doma-spring-boot-starter:1.1.1") {
+        exclude group: "org.springframework.boot"
+    }
+
+    // thymeleaf
+    compile "org.codehaus.groovy:groovy:${groovyVersion}"
+    compile("nz.net.ultraq.thymeleaf:thymeleaf-layout-dialect:2.3.0") {
+        exclude group: "org.codehaus.groovy", module: "groovy"
+        exclude group: "org.thymeleaf", module: "thymeleaf"
+    }
+
+    // jackson
+    compile "com.fasterxml.jackson.dataformat:jackson-dataformat-csv"
+
+    // modelmapper
+    compile "org.modelmapper:modelmapper:0.7.5"
+
+    // mysql database
+    compile "mysql:mysql-connector-java"
+    compile "org.flywaydb:flyway-core"
+
+    // API 문서 자동 생성을 이용하기 위해 추가하는 라이브러리
+    compile "io.springfox:springfox-swagger2:2.6.0"
+    // Swagger UI를 이용하기 위해 추가하는 라이브러리
+    compile "io.springfox:springfox-swagger-ui:2.6.0"
+
+    testCompile "org.springframework.boot:spring-boot-starter-test"
+    testCompile "org.spockframework:spock-spring:${spockVersion}"
+}

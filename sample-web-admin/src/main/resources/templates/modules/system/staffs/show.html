@@ -1,0 +1,49 @@
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      layout:decorate="~{layouts/sidebarLayout}">
+    <head>
+        <title>담당자관리</title>
+    </head>
+    <body>
+        <div layout:fragment="sidebar">
+            <div th:replace="~{layouts/sidebar :: sidebar ('system', 'staff')}"></div>
+        </div>
+        <section layout:fragment="content-header">
+            <h1>담당자 상세</h1>
+            <ol class="breadcrumb">
+                <li><a th:href="@{/}">Home</a></li>
+                <li><a th:href="@{/system/staffs/find(page=1)}">담당자 검색</a></li>
+                <li>담당자 상세</li>
+            </ol>
+        </section>
+        <section layout:fragment="content">
+            <div class="box">
+                <div class="box-header with-border">
+                    <table class="table table-hover" th:object="${staff}">
+                        <tr>
+                            <th>ID</th>
+                            <td th:text="*{id}"></td>
+                        </tr>
+                        <tr>
+                            <th>성명</th>
+                            <td><b th:text="*{firstName + ' ' + lastName}"></b></td>
+                        </tr>
+                        <tr>
+                            <th>메일 주소</th>
+                            <td th:text="*{email}"></td>
+                        </tr>
+                        <tr>
+                            <th>전화번호</th>
+                            <td th:text="*{tel}"></td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="box-footer clearfix">
+                    <a th:href="@{/system/staffs/edit/{id}(id=${staff.id})}" class="btn btn-default bg-purple">편집</a>
+                    <a href="#" class="btn btn-danger">삭제</a>
+                </div>
+            </div>
+        </section>
+    </body>
+</html>

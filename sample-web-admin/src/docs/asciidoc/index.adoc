@@ -1,0 +1,5 @@
+// ### src/docs/asciidoc/ 아래에 작성
+// ### asciidoctor gradle plugin의 sources에 인클루드할 베이스 파일명을 기재
+include::{snippets}/overview.adoc[]
+include::{snippets}/paths.adoc[]
+include::{snippets}/definitions.adoc[]

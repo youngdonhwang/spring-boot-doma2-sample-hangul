@@ -1,0 +1,40 @@
+spring:
+  profiles: development
+  messages:
+    cache-duration: -1
+  datasource:
+    platform: mysql
+    driver-class-name: com.mysql.jdbc.Driver
+      url: jdbc:mysql://127.0.0.1:3306/MySQL80?useSSL=false&allowPublickKeyRetrieval=true&characterEncoding=UTF-8
+#    url: jdbc:mysql://127.0.0.1:3306/MySQL80?useSSL=false&characterEncoding=UTF-8 원본
+    username: root
+    password: hyd8036
+  #  url: jdbc:mysql://127.0.0.1:3306/sample?useSSL=false&characterEncoding=UTF-8
+  #  username: root
+  #  password: passw0rd
+
+  resources:
+    # 캐시의 무효화
+    cache:
+      period: 0
+  flyway:
+    enable: true
+    baseline-on-migrate: true
+doma:
+  # SQL 파일을 캐시하지 않는다
+  sql-file-repository: no_cache
+logging:
+  level:
+    org.springframework: INFO
+    org.springframework.jdbc: INFO
+    org.thymeleaf: INFO
+    com.sample: INFO
+
+####
+# 애플리케이션의 설정
+application:
+  fileUploadLocation: build/sample
+  cors:
+    allowedHeaders: "Origin, X-Requested-With, Content-Type, Accept, X-XSRF-TOKEN"
+    allowedMethods: "POST, GET, PUT, OPTIONS, DELETE"
+    allowedOrigins: "*" # CORS를 허가하는 도메인명을 지정한다

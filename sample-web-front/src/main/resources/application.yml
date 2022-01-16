@@ -1,0 +1,105 @@
+# 공통의 설정을 정의한다
+spring:
+  profiles:
+    # 디폴트를 명시적으로 지정한다
+    # 로컬 환경 이외는 환경변수로 프로파일을 전환할 수 있다
+    default: local
+    active: local
+  messages:
+    # 메시지 정의 파일의 패스를 포함하여 설정한다
+    basename: messages,ValidationMessages
+    cache-duration: -1
+    encoding: UTF-8
+  jackson:
+    # JSON의 키를 언더스코어 구분의 문자열로 한다
+    property-naming-strategy: CAMEL_CASE_TO_LOWER_CASE_WITH_UNDERSCORES
+  thymeleaf:
+    # HTML5모드가 비추천이 되었으므로 HTML모드로 한다
+    mode: HTML
+  session:
+    jdbc:
+      # spring-session-jdbc에 필요한 테이블을 작성한다
+      initialize-schema: always
+      schema: classpath:org/springframework/session/jdbc/schema-mysql.sql
+      table-name: SPRING_SESSION
+    store-type: JDBC
+  resources:
+    # 정적 컨텐츠를 캐시한다
+    cache:
+      period: 604800
+    chain:
+      # GZip되어 있는 리소스가 있으면 사용한다
+      gzipped: true
+      strategy:
+        content:
+          # 컨텐츠의 MD5해시값에 의한 버져닝
+          enabled: true
+          paths: /**
+  servlet:
+    multipart:
+      # 업로드의 사이즈 제한을 설정한다
+      max-file-size: 5MB
+      max-request-size: 5MB
+  security:
+    filter:
+      dispatcher-types: forward,async,error,request
+    basic:
+      # spring-security의 베이직 인증을 무효화한다
+      enabled: false
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    hikari:
+      autoCommit: false
+      connectionTimeout: 30000
+      idleTimeout: 30000
+      maxLifetime: 1800000
+      connectionTestQuery: SELECT 1
+      minimumIdle: 10
+      maximumPoolSize: 30
+  batch:
+    job:
+      # 자동적으로 배치 Job이 기동하지 않도록 한다
+      enabled: false
+  mail:
+    default-encoding: ISO-2022-JP
+    protocol: smtp
+    host: 127.0.0.1
+    port: 25
+    username: test
+    password: test
+    properties:
+      mail:
+        from: from@sample.com
+doma:
+  dialect: mysql
+  # 소문자의 스네이크 케이스로 변환한다（firstName → first_name）
+  naming: SNAKE_LOWER_CASE
+  # SQL파일을 캐시한다
+  sql-file-repository: greedy_cache
+  # 벌크 인서트・업데이트의 사이즈
+  batch-size: 1000
+jmx:
+  enabled: false
+management:
+  security:
+    enabled: false
+server:
+  port: 18080
+  compression:
+    enabled: true
+  servlet:
+    session:
+      timeout: 7200
+      # URL에 세션ID를 출력하지 않도록 한다
+      tracking-modes: cookie
+    contextPath: /
+logging:
+  pattern:
+    # MDC에 설정한 값을 출력한다
+    level: "[%X{FUNCTION_NAME}:%X{X-Track-Id}:%X{LOGIN_USER_ID}] %5p"
+
+
+####
+# 애플리케이션의 설정
+application:
+  fileUploadLocation: build/sample

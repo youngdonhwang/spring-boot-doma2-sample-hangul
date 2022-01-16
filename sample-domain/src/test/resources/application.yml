@@ -1,0 +1,40 @@
+# 공통의 설정을 정의한다
+spring:
+    profiles:
+        # 디폴트를 명시적으로 지정한다
+        # 개발 환경 이외는 환경 변수로 프로파일을 전환한다
+        default: development
+        active: development
+    datasource:
+        platform: mysql
+        driver-class-name: com.mysql.jdbc.Driver
+        # url: jdbc:mysql://127.0.0.1:3306/sample?useSSL=false&characterEncoding=UTF-8
+        url: jdbc:mysql://192.168.99.100:3306/sample?useSSL=false&characterEncoding=UTF-8
+        username: root
+        password: passw0rd
+        autoCommit: false
+    mail:
+        default-encoding: ISO-2022-JP
+        protocol: smtp
+        host: 127.0.0.1
+        port: 25
+        username: test
+        password: test
+        properties:
+            mail:
+                from: from@sample.com
+# Doma2
+doma:
+    dialect: mysql
+    # 소문자의 스네이크케이스로 변환한다（firstName → first_name）
+    naming: SNAKE_LOWER_CASE
+    # SQL파일을 캐시한다
+    sql-file-repository: no_cache
+    # 벌크 인서트・업데이트의 사이즈
+    batch-size: 1000
+
+
+####
+# 애플리케이션의 설정
+application:
+    fileUploadLocation: /tmp/sample

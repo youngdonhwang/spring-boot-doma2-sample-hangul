@@ -1,0 +1,44 @@
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      layout:decorate="~{layouts/sidebarLayout}">
+    <head>
+        <title>코드분류관리</title>
+    </head>
+    <body>
+        <div layout:fragment="sidebar">
+            <div th:replace="~{layouts/sidebar :: sidebar ('system', 'codeCategory')}"></div>
+        </div>
+        <section layout:fragment="content-header">
+            <h1 th:with="text=${codeCategoryForm.isNew()} ? '코드분류등록' : '코드분류편집'" th:text="${text}">코드분류등록</h1>
+            <ol class="breadcrumb">
+                <li><a th:href="@{/}">Home</a></li>
+                <li><a th:href="@{/system/code_categories/find(page=1)}">코드분류검색</a></li>
+                <li th:with="text=${codeCategoryForm.isNew()} ? '코드분류등록' : '코드분류편집'" th:text="${text}">코드분류등록</li>
+            </ol>
+        </section>
+        <section layout:fragment="content">
+            <div class="box">
+                <form th:object="${codeCategoryForm}" th:action="${action}" id="form1"
+                      th:with="action=${codeCategoryForm.isNew()} ? @{/system/code_categories/new} : @{/system/code_categories/edit/{id}(id=*{id})}"
+                      class="form-horizontal" enctype="multipart/form-data" method="post">
+                    <div class="box-body">
+                        <input th:replace="~{fragments/inputField :: input ('text', '코드분류키', 'categoryKey')}" />
+                        <input th:replace="~{fragments/inputField :: input ('text', '코드분류명', 'categoryName')}" />
+                    </div>
+                    <div class="box-footer">
+                        <button class="btn btn-default bg-purple" type="submit"
+                                th:with="text=${codeCategoryForm.isNew()} ? '등록' : '보관'" th:text="${text}">
+                            Add Code
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </section>
+    </body>
+    <div layout:fragment="scripts">
+        <script th:replace="~{fragments/validationScript :: script}" />
+        <script type="text/javascript" src="../public/static/js/system/codeCategories.js"
+                th:src="@{/static/js/system/codeCategories.js}"></script>
+    </div>
+</html>

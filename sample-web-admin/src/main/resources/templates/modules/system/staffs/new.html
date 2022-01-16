@@ -1,0 +1,48 @@
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      layout:decorate="~{layouts/sidebarLayout}">
+    <head>
+        <title>담당자 관리</title>
+    </head>
+    <body>
+        <div layout:fragment="sidebar">
+            <div th:replace="~{layouts/sidebar :: sidebar ('system', 'staff')}"></div>
+        </div>
+        <section layout:fragment="content-header">
+            <h1 th:with="text=${staffForm.isNew()} ? '담당자 등록' : '담당자 편집'" th:text="${text}">담당자 등록</h1>
+            <ol class="breadcrumb">
+                <li><a th:href="@{/}">Home</a></li>
+                <li><a th:href="@{/system/staffs/find(page=1)}">담당자 검색</a></li>
+                <li th:with="text=${staffForm.isNew()} ? '담당자 등록' : '담당자 편집'" th:text="${text}">담당자 등록</li>
+            </ol>
+        </section>
+        <section layout:fragment="content">
+            <div class="box">
+                <form th:object="${staffForm}" th:action="${action}" id="form1"
+                      th:with="action=${staffForm.isNew()} ? @{/system/staffs/new} : @{/system/staffs/edit/{id}(id=*{id})}"
+                      class="form-horizontal" enctype="multipart/form-data" method="post">
+                    <div class="box-body">
+                        <input th:replace="~{fragments/inputField :: input ('text', '이름', 'firstName')}" />
+                        <input th:replace="~{fragments/inputField :: input ('text', '성', 'lastName')}" />
+                        <input th:replace="~{fragments/inputField :: input ('password', '패스워드', 'password')}" />
+                        <input th:replace="~{fragments/inputField :: input ('password', '확인 패스워드', 'passwordConfirm')}" />
+                        <input th:replace="~{fragments/inputField :: input ('text', '메일 주소', 'email')}" />
+                        <input th:replace="~{fragments/inputField :: input ('text', '전화번호', 'tel')}" />
+                    </div>
+                    <div class="box-footer">
+                        <button class="btn btn-default bg-purple" type="submit"
+                                th:with="text=${staffForm.isNew()} ? '등록' : '보관'" th:text="${text}">
+                            Add Staff
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </section>
+    </body>
+    <div layout:fragment="scripts">
+        <script th:replace="~{fragments/validationScript :: script}" />
+        <script type="text/javascript" src="../public/static/js/system/staffs.js"
+                th:src="@{/static/js/system/staffs.js}"></script>
+    </div>
+</html>

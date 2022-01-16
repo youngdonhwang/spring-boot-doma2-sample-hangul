@@ -1,0 +1,43 @@
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+    <body>
+        <aside class="main-sidebar" th:fragment="sidebar (category, item)">
+            <section class="sidebar">
+                <ul class="sidebar-menu">
+                    <!--/* 메뉴 헤더 */-->
+                    <!--/* Font-Awesome아이콘 http://fontawesome.io/icons/ */-->
+                    <!--li class="header">기능 리스트</li-->
+                    <!--/* 메뉴 항목 */-->
+                    <li class="treeview" th:class="|treeview ${category=='user' ? 'active' : ''}|">
+                        <a href="#"><i class="fa fa-user-plus"></i>
+                            <span>고객관리</span>
+                            <span class="pull-right-container">
+                                <i class="fa fa-angle-left pull-right"></i>
+                            </span>
+                        </a>
+                        <ul class="treeview-menu">
+                            <li th:class="${item=='user' ? 'active' : ''}"><a href="#" th:href="@{/users/users/find(page=1)}"><i class="fa fa-user-o"></i>고객마스터</a></li>
+                        </ul>
+                    </li>
+                    <li class="treeview" th:class="|treeview ${category=='system' ? 'active' : ''}|">
+                        <a href="#"><i class="fa fa-cogs"></i>
+                            <span>시스템설정</span>
+                            <span class="pull-right-container">
+                                <i class="fa fa-angle-left pull-right"></i>
+                            </span>
+                        </a>
+                        <ul class="treeview-menu">
+                            <li th:class="${item=='staff' ? 'active' : ''}"><a href="#" th:href="@{/system/staffs/find(page=1)}"><i class="fa fa-user-o"></i>담당자마스터</a></li>
+                            <li th:class="${item=='holiday' ? 'active' : ''}"><a href="#" th:href="@{/system/holidays/find(page=1)}"><i class="fa fa-circle-o"></i>공휴일마스터</a></li>
+                            <li th:class="${item=='mailTemplate' ? 'active' : ''}"><a href="#" th:href="@{/system/mailtemplates/find(page=1)}"><i class="fa fa-envelope"></i>메일 템플릿</a></li>
+                            <li th:class="${item=='uploadfile' ? 'active' : ''}"><a href="#" th:href="@{/system/uploadfiles/list}"><i class="fa fa-file"></i>파일관리</a></li>
+                            <li th:class="${item=='role' ? 'active' : ''}"><a href="#" th:href="@{/system/roles/find(page=1)}"><i class="fa fa-circle-o"></i>역할관리</a></li>
+                            <li th:class="${item=='codeCategory' ? 'active' : ''}"><a href="#" th:href="@{/system/code_categories/find(page=1)}"><i class="fa fa-th-list"></i>코드분류마스터</a></li>
+                            <li th:class="${item=='code' ? 'active' : ''}"><a href="#" th:href="@{/system/codes/find(page=1)}"><i class="fa fa-th-list"></i>코드마스터</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </section>
+        </aside>
+    </body>
+</html>

@@ -1,0 +1,13 @@
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{common/layout}" th:with="menu='home'"><!--/* menuItem에 파라미터를 전달한다 */-->
+    <head layout:fragment="~{common/layout::header}">
+        <title>Home</title>
+    </head>
+    <body>
+        <!--/* 이 형식의 주석은 HTML소스로부터 삭제된다 */-->
+        <div layout:fragment="content">
+            <h2>Front Home</h2>
+        </div>
+    </body>
+</html>

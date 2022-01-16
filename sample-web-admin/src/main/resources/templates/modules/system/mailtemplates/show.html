@@ -1,0 +1,51 @@
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      layout:decorate="~{layouts/sidebarLayout}">
+    <head>
+        <title>메일템플릿마스터</title>
+    </head>
+    <body>
+        <div layout:fragment="sidebar">
+            <div th:replace="~{layouts/sidebar :: sidebar ('system', 'mailTemplate')}"></div>
+        </div>
+        <section layout:fragment="content-header">
+            <h1>메일템플릿상세</h1>
+            <ol class="breadcrumb">
+                <li><a th:href="@{/}">Home</a></li>
+                <li><a th:href="@{/system/mailtemplates/find(page=1)}">메일템플릿검색</a></li>
+                <li>메일템플릿상세</li>
+            </ol>
+        </section>
+        <section layout:fragment="content">
+            <div class="box">
+                <div class="box-header with-border">
+                    <table class="table table-hover" th:object="${mailTemplate}">
+                        <tr>
+                            <th>ID</th>
+                            <td th:text="*{id}"></td>
+                        </tr>
+                        <tr>
+                            <th>템플릿키</th>
+                            <td><b th:text="*{templateKey}"></b></td>
+                        </tr>
+                        <tr>
+                            <th>타이틀</th>
+                            <td th:text="*{subject}" />
+                        </tr>
+                        <tr>
+                            <th>본문</th>
+                            <td th:text="*{#strings.abbreviate(templateBody,20)}" th:title="*{templateBody}" />
+                        </tr>
+                    </table>
+                </div>
+                <div class="box-footer clearfix">
+                    <form th:action="@{'/system/mailtemplates/remove/' + ${mailTemplate.id}}" method="post">
+                        <a th:href="@{/system/mailtemplates/edit/{id}(id=${mailTemplate.id})}" class="btn btn-default bg-purple">편집</a>
+                        <button type="submit" class="btn btn-danger">삭제</button>
+                    </form>
+                </div>
+            </div>
+        </section>
+    </body>
+</html>

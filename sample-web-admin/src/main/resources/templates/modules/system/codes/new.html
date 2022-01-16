@@ -1,0 +1,62 @@
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      layout:decorate="~{layouts/sidebarLayout}">
+    <head>
+        <title>코드관리</title>
+    </head>
+    <body>
+        <div layout:fragment="sidebar">
+            <div th:replace="~{layouts/sidebar :: sidebar ('system', 'code')}"></div>
+        </div>
+        <section layout:fragment="content-header">
+            <h1 th:with="text=${codeForm.isNew()} ? '코드등록' : '코드편집'" th:text="${text}">코드등록</h1>
+            <ol class="breadcrumb">
+                <li><a th:href="@{/}">Home</a></li>
+                <li><a th:href="@{/system/codes/find(page=1)}">코드검색</a></li>
+                <li th:with="text=${codeForm.isNew()} ? '코드등록' : '코드편집'" th:text="${text}">코드등록</li>
+            </ol>
+        </section>
+        <section layout:fragment="content">
+            <div class="box">
+                <form th:object="${codeForm}" th:action="${action}" id="form1"
+                      th:with="action=${codeForm.isNew()} ? @{/system/codes/new} : @{/system/codes/edit/{id}(id=*{id})}"
+                      class="form-horizontal" enctype="multipart/form-data" method="post">
+                    <div class="box-body">
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">코드키</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" th:value="*{codeKey}" th:readonly="${not codeForm.isNew()}" />
+                            </div>
+                        </div>
+                        <input th:replace="~{fragments/inputField :: input ('text', '코드값', 'codeValue')}" />
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">코드별칭</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" th:value="*{codeAlias}" th:readonly="${not codeForm.isNew()}" />
+                            </div>
+                        </div>
+                        <input th:replace="~{fragments/inputField :: input ('text', '표시순서', 'displayOrder')}" />
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">무효플래그</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" th:value="${invalid}" th:with="invalid=*{isInvalid eq true}" th:readonly="${not codeForm.isNew()}" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="box-footer">
+                        <button class="btn btn-default bg-purple" type="submit"
+                                th:with="text=${codeForm.isNew()} ? '등록' : '보관'" th:text="${text}">
+                            Add Code
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </section>
+    </body>
+    <div layout:fragment="scripts">
+        <script th:replace="~{fragments/validationScript :: script}" />
+        <script type="text/javascript" src="../public/static/js/system/codes.js"
+                th:src="@{/static/js/system/codes.js}"></script>
+    </div>
+</html>

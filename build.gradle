@@ -1,0 +1,128 @@
+buildscript {
+    ext {
+        springBootVersion = "2.0.6.RELEASE"
+        spockVersion = "1.2-groovy-2.5"
+        groovyVersion = "2.5.3"
+        lombokVersion = "1.18.2"
+        dockerComposePluginVersion = "0.6.6"
+    }
+    repositories {
+        mavenCentral()
+        jcenter()
+    }
+    dependencies {
+        classpath "org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}"
+        classpath "com.github.tntim96:fakesmtp:2.0" // ローカルでダミーのSMTPサーバーを立てる
+        classpath "com.avast.gradle:gradle-docker-compose-plugin:${dockerComposePluginVersion}"
+    }
+}
+
+subprojects {
+    apply plugin: "java"
+    apply plugin: "groovy"
+    apply plugin: "idea"
+    apply plugin: "eclipse"
+    apply plugin: "org.springframework.boot"
+    apply plugin: "io.spring.dependency-management"
+
+    sourceCompatibility = 11
+    targetCompatibility = 11
+    [compileJava, compileTestJava, compileGroovy, compileTestGroovy]*.options*.encoding = "UTF-8"
+    [compileJava, compileTestJava, compileGroovy, compileTestGroovy]*.options*.compilerArgs = ["-Xlint:all"]
+
+    sourceSets {
+        test.resources {
+            // テスト時にsrc/main/resourcesにある設定ファイルを使用する
+            srcDirs "src/main/resources"
+            srcDirs "src/test/resources"
+        }
+    }
+
+    repositories {
+        mavenCentral()
+        jcenter()
+
+        // jasperreports
+        maven { url "http://jasperreports.sourceforge.net/maven2/" }
+        maven { url "http://jaspersoft.artifactoryonline.com/jaspersoft/third-party-ce-artifacts/" }
+    }
+
+    dependencyManagement {
+        imports {
+            mavenBom org.springframework.boot.gradle.plugin.SpringBootPlugin.BOM_COORDINATES
+        }
+    }
+
+    idea {
+        module {
+            downloadJavadoc = true
+            downloadSources = true
+
+            inheritOutputDirs = false
+            outputDir = compileJava.destinationDir
+            testOutputDir = compileTestJava.destinationDir
+        }
+    }
+
+    eclipse {
+        classpath {
+            containers.remove("org.eclipse.jdt.launching.JRE_CONTAINER")
+            containers "org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-11"
+        }
+    }
+
+    bootRun {
+        sourceResources sourceSets.main
+        jvmArgs "-XX:TieredStopAtLevel=1", "-Xverify:none"
+    }
+
+    ext["groovy.version"] = groovyVersion
+    
+    dependencies {
+        compileOnly "org.projectlombok:lombok:${lombokVersion}"
+        annotationProcessor "org.projectlombok:lombok:${lombokVersion}"
+        testCompileOnly "org.projectlombok:lombok:${lombokVersion}"
+
+        testCompile "org.assertj:assertj-core"
+        testCompile "org.spockframework:spock-core:${spockVersion}"
+        testCompile "org.mockito:mockito-core"
+
+    }
+
+
+}
+
+task startFakeSmtpServer(type: JavaExec) {
+    classpath = buildscript.configurations.classpath
+    args = ["--start-server", "-m"] // -m (memory-mode)
+    main = "com.nilhcem.fakesmtp.FakeSMTP"
+}
+
+apply plugin: "docker-compose"
+
+dockerCompose {
+    useComposeFiles = ["docker/docker-compose.yml"]
+}
+
+apply plugin: com.sample.CodeGenPlugin
+
+codegen {
+    domainProjectName = "sample-domain"
+    webProjectName = "sample-web-admin"
+
+    commonDtoPackageName = "com.sample.domain.dto.common"
+    daoPackageName = "com.sample.domain.dao"
+    dtoPackageName = "com.sample.domain.dto"
+    repositoryPackageName = "com.sample.domain.repository"
+    servicePackageName = "com.sample.domain.service"
+    commonServicePackageName = "com.sample.domain.service"
+    exceptionPackageName = "com.sample.domain.exception"
+    webBasePackageName = "com.sample.web.base"
+    baseValidatorPackageName = "com.sample.domain.validator"
+    baseControllerPackageName = "com.sample.web.base.controller.html"
+    controllerPackageName = "com.sample.web.admin.controller.html"
+}
+
+task wrapper(type: Wrapper) {
+    gradleVersion = "4.10.2"
+}

@@ -1,0 +1,13 @@
+version: '2'
+services:
+    mysql:
+        build: ./mysql
+        environment:
+            - MYSQL_DATABASE=sample
+            - MYSQL_ROOT_USER=root
+            - MYSQL_ROOT_PASSWORD=hyd8036
+            # - MYSQL_ROOT_PASSWORD=passw0rd 원본
+            - TZ=Japan
+        ports:
+            - "3303:3306"
+            # - "3306:3306"

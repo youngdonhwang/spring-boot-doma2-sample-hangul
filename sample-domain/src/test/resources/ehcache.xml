@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ehcache>
+
+    <diskStore path="java.io.tmpdir"/>
+
+    <!-- eternal: 캐시 객체의 유효기한의 유무 -->
+    <!-- maxElementsInMemory: 메모리에 보관할 최대 엔트리수 -->
+    <!-- timeToIdleSeconds: 마지막에 액세스한 후에 파기될 때까지의 생존기간 -->
+    <!-- overflowToDisk: 메모리로의 보관수를 넘었을 경우에 디스크에 보관할 것인가 -->
+    <defaultCache
+            eternal="false"
+            maxElementsInMemory="1000"
+            timeToIdleSeconds="0"
+            timeToLiveSeconds="60"
+            overflowToDisk="true"
+    />
+
+    <!-- diskPersistent: 디스크 캐시를 영속화할 것인가에 대한 여부 -->
+    <cache name="code"
+           eternal="false"
+           maxEntriesLocalHeap="10000"
+           timeToLiveSeconds="60"
+    />
+
+    <cache name="code_category"
+           eternal="false"
+           maxEntriesLocalHeap="10000"
+           timeToLiveSeconds="60"
+    />
+
+</ehcache>

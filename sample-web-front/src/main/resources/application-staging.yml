@@ -1,0 +1,28 @@
+spring:
+  profiles: staging
+  datasource:
+    platform: mysql
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://127.0.0.1:3306/sample?useSSL=false&characterEncoding=UTF-8
+    username: root
+    password: passw0rd
+  mail:
+    default-encoding: ISO-2022-JP
+    protocol: smtp
+    host: 127.0.0.1
+    port: 25
+    username: test
+    password: test
+    properties:
+      mail:
+        from: from@test.com
+logging:
+  # 로그 출력처를 지정한다
+  file: /var/log/sample/app.log
+  level:
+    org.springframework.web: INFO
+
+####
+# 애플리케이션의 설정
+application:
+  fileUploadLocation: build/sample
